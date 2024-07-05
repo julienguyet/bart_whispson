@@ -129,7 +129,7 @@ You can call the model by typing in your terminal:
 ```bash
 python bart_whispson.py <audio_file_path> <directory_to_save_results>
 ```
-
+Don't forget to replace  <audio_file_path> <directory_to_save_results> with your actual paths.
 Below are some details on how it works behind the scene:
 
 1. We import the models:

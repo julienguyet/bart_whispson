@@ -120,4 +120,51 @@ A story of the life of the noble Earl of Athlin.
 
 ## 3. BART for Text Summarization :satellite:
 
+Following our results with Flan-T5, we decided to use an LLM specialized in text summarization. We went for [BART] (https://huggingface.co/facebook/bart-large-cnn) and downloaded the large version, trained on CNN articles.
 
+We linked it to Whisper, and build a python script for audio processing, transcription and summarization. 
+
+You can call the model by typing in your terminal:
+
+```bash
+python bart_whispson.py <audio_file_path> <directory_to_save_results>
+```
+
+Below are some details on how it works behind the scene:
+
+1. We import the models:
+
+```python
+tokenizer = BartTokenizer.from_pretrained('facebook/bart-large-cnn')
+model = BartForConditionalGeneration.from_pretrained('facebook/bart-large-cnn')
+```
+
+2. We use a function to first call whisper to process the audio.
+3. Then Whisper output becomes the input for BART.
+4. We use the tokenizer to build a prompt to ask the model to summarize text.
+5. We save transcript and generated summary in user's folder of choice for easy retrieving later. 
+
+```python
+def process_audio_and_summarize(audio_path, save_directory):
+
+    transcript = get_audio_transcript(audio_path)
+    
+    inputs = tokenize_transcript(transcript)
+    
+    generated_ids = generate_summary(inputs)
+    generated_summary = tokenizer.decode(generated_ids[0], skip_special_tokens=True)
+    
+    transcript_filename = os.path.basename(audio_path) + "_transcript.txt"
+    transcript_filepath = os.path.join(save_directory, transcript_filename)
+    
+    with open(transcript_filepath, 'w', encoding='utf-8') as f:
+        f.write(transcript)
+    
+    summary_filename = os.path.basename(audio_path) + "_summary.txt"
+    summary_filepath = os.path.join(save_directory, summary_filename)
+    
+    with open(summary_filepath, 'w', encoding='utf-8') as f:
+        f.write(generated_summary)
+    
+    return generated_summary
+```

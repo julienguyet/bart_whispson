@@ -120,7 +120,7 @@ A story of the life of the noble Earl of Athlin.
 
 ## 3. BART for Text Summarization :satellite:
 
-Following our results with Flan-T5, we decided to use an LLM specialized in text summarization. We went for [BART] (https://huggingface.co/facebook/bart-large-cnn) and downloaded the large version, trained on CNN articles.
+Following our results with Flan-T5, we decided to use an LLM specialized in text summarization. We went for [BART](https://huggingface.co/facebook/bart-large-cnn) and downloaded the large version, trained on CNN articles.
 
 We linked it to Whisper, and build a python script for audio processing, transcription and summarization. 
 
